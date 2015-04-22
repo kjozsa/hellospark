@@ -16,7 +16,7 @@ object HelloSpark {
     }
   }
 
-  def parse(sc: SparkContext, targetCurrency: String): Array[(String, Double)] = {
+  def parse(sc: SparkContext, targetCurrency: String) = {
     val rates = sc.textFile("exchangerates.csv")
       .map(_.split(","))
       .filter { case Array(from, to, rate) => to == targetCurrency }
@@ -36,15 +36,5 @@ object HelloSpark {
   def main(args: Array[String]) {
     val targetCurrency = "GBP" // TODO parse args
     process(targetCurrency)
-  }
-
-  def benchmark[T](block: => T): T = {
-    val start = System.currentTimeMillis()
-    try {
-      block
-    } finally {
-      val end = System.currentTimeMillis()
-      println("## executed in " + (end - start) + "ms")
-    }
   }
 }
